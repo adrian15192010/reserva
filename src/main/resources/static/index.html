@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+
+    html{
+        box-sizing: border-box;
+        /* font-size: 20px; */
+    }
+
+
+    *,
+    *::before,
+     *::after{      /* consejo: esto colocar desde el principio de la hoja css */
+        box-sizing: inherit;
+    }
+
+    *{
+        margin: 0;
+        padding: 0;
+        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+
+    body{
+        background-color: burlywood;
+    }
+
+    header{
+        background-color: bisque;
+        height: 4rem;
+
+    }
+
+    h1,h2{
+        text-align: center;
+        padding: 1%;
+    }
+
+
+
+    .info-estadio{
+        width: 28vw;
+        border-style: solid;
+        margin: 2rem;
+    }
+
+    .estadio-sillas{
+        width: 90vw;
+        border-style: solid;
+        margin: 0.5rem;
+        padding-left: 10rem;
+    }
+
+    .list-eventos{
+        margin-left: 2rem;
+    }
+
+    .add-evento{
+        width: 60vw;
+        border-style: solid;
+        margin: 2rem;
+    }
+
+    .silla{
+        display: inline-block;
+        margin: 1rem;
+        border-style: solid;
+        height: 4rem;
+        width: 6rem;
+        background-color: forestgreen;
+    }
+
+    .silla.ocupada{
+        background-color: rgb(179, 8, 8);
+    }
+
+    input[type="datetime-local"] {
+        margin: 1rem;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .eventoDate{
+        display: block;
+        margin-left: 2rem;
+    }
+
+    .select-event-instruccion{
+        margin-left : 2rem;
+        display: inline;
+    }
+
+</style>
+<body>
+<header>
+    <h1>Reserva una silla para el Evento seleccionado</h1>
+</header>
+<br><br>
+
+<div class="info-estadio">
+    <b>estadio: </b><b id="nombre-estadio"></b><br>
+    <b>dirección: </b><b id="direccion-estadio"></b><br>
+    <b>capacidad: </b><b id="capacidad-estadio"></b>
+</div>
+
+<br><br><br>
+
+<select name="" id="list-eventos" class="list-eventos">
+
+</select>
+<p class="select-event-instruccion">seleccione un evento</p>
+<div class="estadio-sillas"> 
+    <!-- esto se quitara y se pondra en el template -->
+     <div class="info-evento">
+        <b class="eventoDate nombre"></b>
+        <b class="eventoDate tipo"></b>
+        <b class="eventoDate inicio"></b>
+        <b class="eventoDate fin"></b>
+        <b class="eventoDate culminado"></b>
+     </div>
+     <br><br><br>
+   
+</div>
+
+<br><br><br>
+
+<div class="add-evento">
+    <h2>Crear Evento</h2>
+    <br><br>
+    <input type="datetime-local" id="fechaHora" name="fechaHora">
+    <input type="datetime-local" id="fechaHoraFin" name="fechaHora">
+    
+    <input type="text" placeholder="nombre" id="nombre-evento">
+    <input type="text" placeholder="tipo" id="tipo-evento">
+    
+    <button id="add-new-evento">agregar evento</button>
+</div>
+
+<template id="template">
+    <article class="silla"></article>
+</template>
+<br><br><br><br><br><br><br><br><br><br>
+</body>
+<script>
+
+const d = document;
+const $fragment = d.createDocumentFragment();
+
+d.addEventListener("DOMContentLoaded",e=>{
+
+   
+    fetch(`http://localhost:8080/api/estadio/get`)
+    .then(res=> res.ok ? res.json() : Promise.reject(res))
+    .then(json=>{
+
+        const $template = d.getElementById("template").content;
+
+    d.querySelector(".info-estadio").dataset.id = json.id;
+    d.querySelector("#nombre-estadio").textContent = json.nombre;
+    d.querySelector("#direccion-estadio").textContent = json.direccion;
+    d.querySelector("#capacidad-estadio").textContent = json.capacidad;
+
+    let sillas = json.sillaList
+
+    sillas.forEach(el => {
+
+       let silla = $template.querySelector(".silla");
+       silla.textContent = el.id;
+        let $clone = d.importNode($template,true);
+        $fragment.appendChild($clone);
+        
+    });
+
+    d.querySelector(".estadio-sillas").appendChild($fragment);
+
+///////////////////
+
+let eventoId2 = d.getElementById("list-eventos").value;
+
+        
+fetch(`http://localhost:8080/api/silla/reservadas/${eventoId2}`)
+.then(res=> res.ok ? res.json() : Promise.reject(res))
+.then(json=>{
+
+  console.log(json);
+
+  d.querySelector(".eventoDate.nombre").textContent = "nombre: "+json.nombre;
+
+  let sillas = d.querySelectorAll(".silla");
+  console.log(sillas);  
+
+  sillas.forEach(el=>{
+            el.classList.remove("ocupada");
+    })
+  
+  json.listaDeSillasReservadas.forEach(numero=>{
+    console.log(numero);
+    sillas.forEach(el=>{
+             console.log(el.textContent);
+         if(numero == parseInt(el.textContent)){
+                el.classList.add("ocupada");
+                
+         }   
+
+    })
+  });
+
+
+})
+//////////////////
+
+    })
+
+    ////////////////////////////////////////////
+
+    fetch(`http://localhost:8080/api/evento/all`)
+    .then(res=> res.ok ? res.json() : Promise.reject(res))
+    .then(json=>{
+
+      console.log(json);
+
+      
+      json.forEach(el=>{
+          
+          const $option = d.createElement("option");
+          $option.value = el.id;
+          $option.textContent = el.nombre;
+          d.querySelector("#list-eventos").appendChild($option);
+
+      });
+
+
+    })
+
+    /////////////////////////////////
+
+
+    document.getElementById('add-new-evento').addEventListener('click', function() {
+
+    const fechaHoraSeleccionada = new Date(d.getElementById("fechaHora").value); 
+    const fechaHoraSeleccionadaFin = new Date(d.getElementById("fechaHoraFin").value); 
+    
+    let dia = fechaHoraSeleccionada.getDate() < 10 ? "0"+fechaHoraSeleccionada.getDate(): fechaHoraSeleccionada.getDate();
+    let mes = (fechaHoraSeleccionada.getMonth() + 1) < 10 ? "0"+(fechaHoraSeleccionada.getMonth() + 1) : fechaHoraSeleccionada.getMonth() + 1; 
+    let año = fechaHoraSeleccionada.getFullYear();
+    let horas = fechaHoraSeleccionada.getHours() < 10 ? "0"+fechaHoraSeleccionada.getHours(): fechaHoraSeleccionada.getHours(); 
+    let minutos = fechaHoraSeleccionada.getMinutes() < 10 ? "0"+fechaHoraSeleccionada.getMinutes(): fechaHoraSeleccionada.getMinutes();
+
+    let diaFIN = fechaHoraSeleccionadaFin.getDate() < 10 ? "0"+fechaHoraSeleccionadaFin.getDate(): fechaHoraSeleccionadaFin.getDate();
+    let mesFIN = (fechaHoraSeleccionadaFin.getMonth() + 1) < 10 ? "0"+(fechaHoraSeleccionadaFin.getMonth() + 1) : fechaHoraSeleccionadaFin.getMonth() + 1; 
+    let añoFIN = fechaHoraSeleccionadaFin.getFullYear();
+    let horasFIN = fechaHoraSeleccionadaFin.getHours() < 10 ? "0"+fechaHoraSeleccionadaFin.getHours(): fechaHoraSeleccionadaFin.getHours(); 
+    let minutosFIN = fechaHoraSeleccionadaFin.getMinutes() < 10 ? "0"+fechaHoraSeleccionadaFin.getMinutes(): fechaHoraSeleccionadaFin.getMinutes();
+
+
+    let nombre = d.getElementById("nombre-evento").value;
+    let tipo = d.getElementById("tipo-evento").value;
+
+
+    console.log(dia+"-"+mes+"-"+año+" | "+horas+":"+minutos);
+    console.log(diaFIN+"-"+mesFIN+"-"+añoFIN+" | "+horasFIN+":"+minutosFIN);
+
+    console.log("Fecha seleccionada: " + fechaHoraSeleccionada);
+    console.log("Fecha seleccionada: " + fechaHoraSeleccionadaFin);
+    console.log(`${año}-${mes}-${dia}T${horas}:${minutos}:00`);
+
+
+    fetch("http://localhost:8080/api/evento/create",{
+                method:"POST",
+                headers: {     
+               'Content-Type': 'application/json' 
+                },
+                body: JSON.stringify({    
+                nombre: nombre,
+	            tipo: tipo,
+	            inicio: `${año}-${mes}-${dia}T${horas}:${minutos}:00`,
+	            fin: `${añoFIN}-${mesFIN}-${diaFIN}T${horasFIN}:${minutosFIN}:00`,
+                estadio:{
+                    id: 3 // d.querySelector(".info-estadio").dataset.id
+                }
+            })
+            })
+     .then(res=> res.ok ? res.json() : Promise.reject(res))  
+     .then(json=>{
+
+        console.log(json);
+        location.reload();
+
+     })
+     .catch(err=>{
+        console.log(err);
+     })     
+
+
+
+    });
+
+    ///////////////////////////////////////////////////////
+
+    d.getElementById("list-eventos").addEventListener("change", e=>{
+
+        let eventoId = e.target.value;
+
+        
+    fetch(`http://localhost:8080/api/silla/reservadas/${eventoId}`)
+    .then(res=> res.ok ? res.json() : Promise.reject(res))
+    .then(json=>{
+
+      console.log(json);
+
+      d.querySelector(".eventoDate.nombre").textContent = "nombre: "+json.nombre;
+
+      let sillas = d.querySelectorAll(".silla");
+      console.log(sillas);  
+
+      sillas.forEach(el=>{
+                el.classList.remove("ocupada");
+        })
+      
+      json.listaDeSillasReservadas.forEach(numero=>{
+        console.log(numero);
+        sillas.forEach(el=>{
+                 console.log(el.textContent);
+             if(numero == parseInt(el.textContent)){
+                    el.classList.add("ocupada");
+                    
+             }   
+
+        })
+      });
+
+
+    })
+        
+
+
+
+    })
+
+    //////////////////////////////////////////
+
+    d.addEventListener("click",e=>{
+
+        if(e.target.matches(".silla")){
+           const idEvento = d.getElementById("list-eventos").value;
+           const idSilla = e.target.textContent;
+
+           let booleano = confirm("desea crear una reserva");
+           
+           if(booleano){
+           let cedula = prompt("ingrese la cedula de la persona que tendra la reserva para la silla");    
+
+           fetch(`http://localhost:8080/api/reserva/create/${idEvento}/${idSilla}`,{
+                method:"POST",
+                headers: {     
+               'Content-Type': 'application/json' 
+                },
+                body: JSON.stringify({    
+                    usuario: cedula
+                 })
+            })
+            .then(res=> res.ok ? res.json() : Promise.reject(res))
+            .then(json=>{
+                alert(json.message);
+                location.reload();
+            });
+
+           }
+
+        }
+
+    });
+
+});
+
+
+
+</script>
+</html>
