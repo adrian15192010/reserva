@@ -25,7 +25,7 @@ public class EventoController {
 
         nuevoEvento.setCulminado(false);
 
-        if (nuevoEvento.getInicio().isBefore(LocalDateTime.now()))
+        if (nuevoEvento.getInicio().isBefore(LocalDateTime.now()) || nuevoEvento.getInicio().isAfter(nuevoEvento.getFin()))
             return ResponseEntity.badRequest().build();
 
 
