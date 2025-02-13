@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin
+
 @RestController
 @RequestMapping("/api/reserva")
 public class ReservaController {
