@@ -38,6 +38,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(req ->
                         req
                                 .requestMatchers("/api/auth/**").permitAll()
+                                .requestMatchers("/index").permitAll()
                                 .requestMatchers(("/api/evento/create")).hasRole("ADMIN")
                                 .anyRequest()
                                 .authenticated()
