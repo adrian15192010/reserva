@@ -21,6 +21,9 @@ public class AuthController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private JwtService jwtService;
+
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegisterRequest request) {
@@ -42,15 +45,11 @@ public class AuthController {
     }
 
     @PutMapping("habilitar")
-    public ResponseEntity<?> habilitar(){
+    public ResponseEntity<?> habilitar(@RequestHeader(HttpHeaders.AUTHORIZATION) final String authentication){
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = "";
-        if (principal instanceof UserDetails) {
-            username = ((UserDetails)principal).getUsername();
-        } else {
-            username = principal.toString();
-        }
+        String token = authentication.substring(7);
+
+        String username = jwtService.extractUsername(token);
 
         User user = userRepository.findByEmail(username).get();
         user.setHabilitado(true);

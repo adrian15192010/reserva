@@ -35,7 +35,10 @@ d.addEventListener("DOMContentLoaded",e => {
                 .then(res=> res.ok ? res.text() : Promise.reject(res))
                 .then(data=>{
                    alert(data);
-                });    
+                })
+                .catch(err=>{
+                    console.log(err);
+                });
     
 
 
