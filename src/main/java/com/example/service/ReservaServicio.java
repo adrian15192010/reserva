@@ -45,6 +45,7 @@ public class ReservaServicio {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Evento no encontrado"));
 
+
         if (evento.getCulminado()) throw new RuntimeException("el evento ya ha culminado");
 
         List<Reserva> reservaList = reservaRepository.findByEvento(evento);
