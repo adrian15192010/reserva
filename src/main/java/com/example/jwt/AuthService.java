@@ -2,15 +2,21 @@ package com.example.jwt;
 
 
 import com.example.mail.IEmailService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.List;
 
@@ -26,6 +32,7 @@ public class AuthService {
     private final UserRepository userRepository;
     private final TaskExecutor taskExecutor;
     private final IEmailService emailService;
+
 
 
     public String register(final RegisterRequest request) {
@@ -116,15 +123,17 @@ public class AuthService {
         return new TokenResponse(accessToken, refreshToken);
     }
 
-    public String GetUsername (){
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = "";
-        if (principal instanceof UserDetails) {
-            username = ((UserDetails)principal).getUsername();
-        } else {
-            username = principal.toString();
+    public String getUsername() {
+
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+
+        // Extraer el token JWT directamente del header
+        final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            String token = authHeader.substring(7); // Extrae el token JWT
+            return jwtService.extractUsername(token);
         }
-        return username;
+        return "No token found";
     }
 
 

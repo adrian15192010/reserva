@@ -3,6 +3,7 @@ package com.example.controller;
 import com.example.dto.DatosEventoAndSillaReservadas;
 import com.example.entity.Evento;
 import com.example.entity.Reserva;
+import com.example.jwt.AuthService;
 import com.example.repository.EventoRepository;
 import com.example.repository.ReservaRepository;
 import com.example.repository.SillaRepository;
@@ -26,6 +27,9 @@ public class SillaController {
 
     @Autowired
     private SillaRepository sillaRepository;
+
+    @Autowired
+    private AuthService authService;
 
     @GetMapping("/all")
     public ResponseEntity<?> findAll(){
@@ -59,6 +63,10 @@ public class SillaController {
 
     }
 
+    @GetMapping("/get/string/user")
+    public ResponseEntity<?> userget(){
+        return ResponseEntity.ok(authService.getUsername());
+    }
 
 
 }

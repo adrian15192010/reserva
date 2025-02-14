@@ -3,6 +3,8 @@ package com.example.service;
 import com.example.entity.Evento;
 import com.example.entity.Reserva;
 import com.example.entity.Silla;
+import com.example.jwt.AuthService;
+import com.example.jwt.UserRepository;
 import com.example.repository.EventoRepository;
 import com.example.repository.ReservaRepository;
 import com.example.repository.SillaRepository;
@@ -27,10 +29,17 @@ public class ReservaServicio {
     @Autowired
     private SillaRepository sillaRepository;
 
+    @Autowired
+    private UserRepository userRepository;
 
+    @Autowired
+    private AuthService authService;
 
 
     public Map createReserva (Reserva reserva, Long idEvento, Long idSilla){
+
+        if (!userRepository.findByEmail(authService.getUsername()).get().getHabilitado())
+            throw new RuntimeException();
 
         Evento evento = eventoRepository.findById(idEvento)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
