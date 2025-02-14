@@ -11,4 +11,9 @@ public class HtmlController {
          return "index";
      }
 
+    @GetMapping("/habilitar")
+    public String habilitar(){
+        return "habilitar";
+    }
+
 }

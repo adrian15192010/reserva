@@ -36,6 +36,9 @@ public class User implements UserDetails {
   @Column(nullable = false)
   private String password;
 
+  @Column(nullable = false)
+  private Boolean habilitado;
+
   @Enumerated(EnumType.STRING)
   Role role;
 

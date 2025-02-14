@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+<h1>Enlace de verificacion</h1>
+
+</body>
+<script>
+
+const d = document;
+
+
+d.addEventListener("DOMContentLoaded",e => {
+
+    const queryString = window.location.search;
+    console.log(queryString); // ?campo1=asdsad&campo2=asds
+    
+    const urlParams = new URLSearchParams(queryString);
+    
+    const jwt = urlParams.get('jwt');
+
+    fetch(`http://localhost:8080/api/auth/habilitar`,{
+                    method: 'PUT',
+                    headers: {
+                    'Authorization':`Bearer ${jwt}`,    
+                    'Content-Type': 'application/json' 
+                    }
+
+                })
+                .then(res=> res.ok ? res.text() : Promise.reject(res))
+                .then(data=>{
+                   alert(data);
+                });    
+    
+
+
+});
+
+
+
+
+
+
+</script>
+</html>

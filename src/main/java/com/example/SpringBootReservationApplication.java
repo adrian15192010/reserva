@@ -31,6 +31,7 @@ public class SpringBootReservationApplication {
 					.name("ADMIN")
 					.email("admin")
 					.password(passwordEncoder.encode("1234"))
+					.habilitado(true)
 					.role(Role.ADMIN)
 					.build());
 

@@ -1,6 +1,7 @@
 package com.example.jwt;
 
 
+import com.example.mail.IEmailService;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.task.TaskExecutor;
@@ -24,13 +25,15 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
     private final TaskExecutor taskExecutor;
+    private final IEmailService emailService;
 
 
-    public TokenResponse register(final RegisterRequest request) {
+    public String register(final RegisterRequest request) {
         final User user = User.builder()
                 .name(request.name())
                 .email(request.email())
                 .password(passwordEncoder.encode(request.password()))
+                .habilitado(false)
                 .role(Role.USER)
                 .build();
 
@@ -39,7 +42,16 @@ public class AuthService {
         final String refreshToken = jwtService.generateRefreshToken(savedUser);
 
         saveUserToken(savedUser, jwtToken);
-        return new TokenResponse(jwtToken, refreshToken);
+
+        taskExecutor.execute(()->{
+
+            String email[] = new String[1];
+            email[0] = request.email();
+            emailService.sendEmail(email, "Verificacion mama huevo", "http://localhost:8080/habilitar?jwt="+jwtToken);
+
+        });
+
+        return "Hemos enviado un enlace de verificacion a tu correo";
     }
 
     public TokenResponse authenticate(final AuthRequest request) {
