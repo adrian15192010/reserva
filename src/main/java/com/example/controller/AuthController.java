@@ -60,4 +60,10 @@ public class AuthController {
     }
 
 
+    @GetMapping("all")
+    public ResponseEntity<?> users(){
+        return ResponseEntity.ok(userRepository.findAll());
+    }
+
+
 }
