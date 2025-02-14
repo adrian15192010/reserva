@@ -47,7 +47,7 @@ public class AuthService {
 
             String email[] = new String[1];
             email[0] = request.email();
-            emailService.sendEmail(email, "Verificacion mama huevo", "http://localhost:8080/habilitar?jwt="+jwtToken);
+            emailService.sendEmail(email, "Verificacion mama huevo", "http://localhost:8080/habilitate?jwt="+jwtToken);
 
         });
 
