@@ -52,7 +52,8 @@ public class ReservaServicio {
 
         for (Reserva r : reservaList){
 
-            if (r.getSilla().getId() == idSilla)  throw new RuntimeException("La silla ya esta reservada para el evento");
+            if (r.getSilla().getId() == idSilla)  return Map.of("message", "La silla ya esta reservada para el evento");
+                //throw new RuntimeException("La silla ya esta reservada para el evento");
 
         }
 

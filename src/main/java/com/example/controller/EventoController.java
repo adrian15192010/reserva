@@ -34,7 +34,7 @@ public class EventoController {
         for (Evento evento : eventosExistentes) {
 
             if (nuevoEvento.getInicio().isBefore(evento.getFin()) && nuevoEvento.getFin().isAfter(evento.getInicio())) {
-                throw new RuntimeException(" Ya hay un evento programado en este horario y estadio");
+                return ResponseEntity.ok("Ya hay un evento programado en este horario y estadio");
             }
         }
         eventoRepository.save(nuevoEvento);
