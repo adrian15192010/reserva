@@ -54,7 +54,7 @@ public class AuthService {
 
             String email[] = new String[1];
             email[0] = request.email();
-            emailService.sendEmail(email, "Verificacion mama huevo", "http://localhost:8080/html/habilitate?jwt="+jwtToken);
+            emailService.sendEmail(email, "Verificacion", "http://localhost:8080/html/habilitate?jwt="+jwtToken);
 
         });
 
@@ -81,11 +81,11 @@ public class AuthService {
 
                 String email[] = new String[1];
                 email[0] = request.email();
-                emailService.sendEmail(email, "Verificacion mama huevo", "http://localhost:8080/html/habilitate?jwt="+accessToken);
+                emailService.sendEmail(email, "Verificacion", "http://localhost:8080/html/habilitate?jwt="+accessToken);
 
             });
 
-            throw new RuntimeException("inhabilitado Hemos enviado un enlace de verificacion a tu correo");
+            throw new RuntimeException("inhabilitado, Hemos enviado un enlace de verificacion a tu correo");
         }
 
         return new TokenResponse(accessToken, refreshToken);
