@@ -74,7 +74,7 @@ public class AuthService {
         final String refreshToken = jwtService.generateRefreshToken(user);
         revokeAllUserTokens(user);
         saveUserToken(user, accessToken);
-        return new TokenResponse(accessToken, refreshToken);
+        return new TokenResponse(accessToken, refreshToken, user.getHabilitado());
     }
 
     private void saveUserToken(User user, String jwtToken) {
