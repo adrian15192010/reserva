@@ -6,8 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -46,16 +44,7 @@ public class AuthController {
 
     @PutMapping("habilitar")
     public ResponseEntity<?> habilitar(@RequestHeader(HttpHeaders.AUTHORIZATION) final String authentication){
-
-        String token = authentication.substring(7);
-
-        String username = jwtService.extractUsername(token);
-
-        User user = userRepository.findByEmail(username).get();
-        user.setHabilitado(true);
-        userRepository.save(user);
-
-        return ResponseEntity.ok("cuenta habilitada");
+        return ResponseEntity.ok(service.habilitarUser(authentication));
     }
 
 

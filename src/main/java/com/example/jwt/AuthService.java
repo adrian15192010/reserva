@@ -136,5 +136,17 @@ public class AuthService {
         return "No token found";
     }
 
+    public String habilitarUser(String authentication){
+        String token = authentication.substring(7);
+
+        String username = jwtService.extractUsername(token);
+
+        User user = userRepository.findByEmail(username).get();
+        user.setHabilitado(true);
+        userRepository.save(user);
+
+        return "cuenta habilitada";
+    }
+
 
 }
