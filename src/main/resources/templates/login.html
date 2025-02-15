@@ -106,7 +106,7 @@ body{
     text-decoration: underline;
 }
 
-.wrapper .btn{
+.wrapper .btn, .wrapper .btnAdmin{
     width: 100%;
     height: 45px;
     background: #fff;
@@ -118,6 +118,7 @@ body{
     font-size: 16px;
     color: #333;
     font-weight: 600;
+    margin: 0.2em;
 }
 
 .wrapper .registre-link{
@@ -221,6 +222,7 @@ a{
             <a href="#">Olvido su contraseña</a>
          </div>
          <button type="submit" class="btn">Login</button>
+        <button type="submit" class="btnAdmin">Entrar como ADMIN</button>
          <div class="registre-link">
             <p>¿No tienes una cuenta? <a href="register">Registrate</a></p>
          </div>
@@ -283,7 +285,44 @@ fetch(`http://localhost:8080/api/auth/login`,{
   });
   
 }
+/////////////////////////////////////////////////////////////////////
+if(e.target.matches(".btnAdmin")){
+    fetch(`http://localhost:8080/api/auth/login`,{
+    method:"POST",
+    headers: {
+    'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+  email:"admin",
+  password:"1234"
+    })
+  })
+  .then(res=> res.ok ? res.json() : Promise.reject(res))
+  .then(json=>{
 
+   console.log(json);
+
+     if(json.message != "inhabilitado, Hemos enviado un enlace de verificacion a tu correo"){
+
+         window.location.href = `http://localhost:8080/html/index?jwt=${json.access_token}`;
+
+       // window.location.href = `./index.html?jwt=${json.access_token}`;
+
+     }
+
+     if(json.message != undefined) alert(json.message);
+
+
+   })
+   .catch(error=>{
+
+         alert("inhabilitado, Hemos enviado un enlace de verificacion a tu correo");
+
+
+         console.log(error);
+   });
+}
+///////////////////////////////////////////////////////////////
 });
 
 

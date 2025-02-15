@@ -100,6 +100,7 @@
 <body>
 <header>
     <h1>Reserva una silla para el Evento seleccionado</h1>
+    <button id="cerrar_sesion">cerrar sesion</button>
 </header>
 <br><br>
 
@@ -419,7 +420,25 @@ fetch(`http://localhost:8080/api/silla/reservadas/${eventoId2}`,{
            }
 
         }
+//////////////////////////////////////////////////////////
+        if(e.target.matches("#cerrar_sesion")){
+            fetch(`http://localhost:8080/api/auth/logout`,{
+                method:"GET",
+                headers: {
+               'Authorization':`Bearer ${jwt}`,
+               'Content-Type': 'application/json'
+                }
+            })
+            .then(res=> res.ok ? res.text() : Promise.reject(res))
+            .then(json=>{
 
+              d.querySelector("body").innerHTML = " <h1>Sesion Cerrada</h1>";
+
+
+            });
+        }
+
+///////////////////////////////////////////////////////////////////
     });
 
 });
