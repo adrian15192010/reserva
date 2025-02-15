@@ -93,7 +93,7 @@ const d = document;
 d.addEventListener("DOMContentLoaded",e=>{
 
     d.addEventListener("click", e =>{
-    
+    e.preventDefault();
 if(e.target.matches("button")){
     e.preventDefault();
     d.querySelector("img").classList.toggle("hidden");
