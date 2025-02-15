@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Envios</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<style>
+   
+html{
+    box-sizing: border-box;
+    /* font-size: 20px; */
+}   
+
+
+*, 
+*::before,
+ *::after{      /* consejo: esto colocar desde el principio de la hoja css */
+    box-sizing: inherit;
+}
+
+
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: rgb(110, 100, 100);
+}
+
+
+.wrapper{
+    width: 420px;
+    background: transparent;
+    border: 2px solid rgba(255,255,255,.2);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 10px rgba(0,0,0, .2);
+    color: #fff;
+    border-radius: 10px;
+    padding: 30px 40px;
+}
+
+.wrapper h1{
+    font-size: 36px;
+    text-align: center;
+}
+
+.wrapper .input-box{
+    position: relative;
+    width: 100%;
+    height: 50px;
+    margin: 30px 0;
+}
+
+.input-box input{
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    border: 2px solid rgba(255, 255, 255, .2);
+    border-radius: 40px;
+    font-size: 16px;
+    color: #fff;
+    padding: 20px 45px 20px 20px;
+}
+
+.input-box input::placeholder{
+    color: #fff;
+}
+
+.input-box i{
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+}
+
+.wrapper .remember-forgot{
+    display: flex;
+    justify-content: space-between;
+    font-size: 14.5px;
+    margin: -15px 0 15px; 
+}
+
+.remember-forgot label input {
+    accent-color: #fff;
+    margin-right: 3px;
+
+}
+
+.remember-forgot a{
+    color: #fff;
+    text-decoration: none;
+}
+
+.remember-forgot a:hover{
+    text-decoration: underline;
+}
+
+.wrapper .btn{
+    width: 100%;
+    height: 45px;
+    background: #fff;
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    font-weight: 600;
+}
+
+.wrapper .registre-link{
+    font-size: 14.5px;
+    text-align: center;
+    margin: 20px 0 15px;
+}
+
+.registre-link p a{
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.registre-link p a:hover{
+    text-decoration: underline;
+}
+
+figure{
+    display: inline-block;
+}
+
+.img{
+    width: 150px;
+    height: 150px;
+}
+
+
+.welcome{
+    color: #fff;
+}
+
+header{
+    text-align: right;
+    width: 100vw;
+    height: 10vh;
+    background-color: darkgoldenrod;
+    position: absolute;
+    top: 0;
+}
+
+h2{
+    margin-right: 80px;
+}
+
+.back{
+    background-color: rgb(107, 81, 15);
+    border-radius: 5%;
+    padding: 8px;
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+    position: absolute;
+    left: 15px;
+    top: 10px;
+    transition: all 0.5s;
+}
+
+.back:hover{
+    background-color: #fff;
+    color: #333;
+}
+
+.carta{
+    display: inline-block;
+    width: 180px;
+    height: 50px;
+    background-color: #fff;
+    position: absolute;
+    top: 77px;
+    right: 2rem;
+    visibility: hidden;
+}
+
+.carta.visible{
+    visibility: visible;
+}
+
+a{
+    color: inherit;
+    text-decoration: none;
+}
+</style>
+<body>
+    
+
+<div class="wrapper">
+    <form action="">
+         <h1>Login</h1>
+         <div class="input-box">
+            <input type="text" placeholder="Username">
+            <i class='bx bxs-user'></i>
+         </div>
+         <div class="input-box">
+            <input type="text" placeholder="Password" required>
+            <i class='bx bxs-lock-alt'></i>
+         </div>
+         <div class="remember-forgot">
+            <label><input type="checkbox"> Recordarme</label>
+            <a href="#">Olvido su contraseña</a>
+         </div>
+         <button type="submit" class="btn">Login</button>
+         <div class="registre-link">
+            <p>¿No tienes una cuenta? <a href="register">Registrate</a></p>
+         </div>
+            <a href="habilitar">habilitar</a>
+    </form>
+</div>
+</body>
+<script>
+
+
+   const d = document;
+
+
+   d.addEventListener("DOMContentLoaded",e=>{
+
+
+
+      d.addEventListener("click", e =>{
+
+
+if(e.target.matches(".btn")){
+    e.preventDefault();
+    
+    let $inputs = d.querySelectorAll("input");
+   // d.querySelector("img").classList.toggle("hidden");
+
+fetch(`http://localhost:8080/api/auth/login`,{
+    method:"POST",
+    headers: {
+    'Content-Type': 'application/json' 
+    },
+    body: JSON.stringify({    
+  email:$inputs[0].value,
+  password:$inputs[1].value
+    })
+  })
+  .then(res=> res.ok ? res.json() : Promise.reject(res))
+  .then(json=>{
+   
+  console.log(json);
+
+    if(json.message != "inhabilitado, Hemos enviado un enlace de verificacion a tu correo"){
+
+        window.location.href = `http://localhost:8080/html/index?jwt=${json.access_token}`;
+    
+       //window.location.href = `./index.html?jwt=${json.access_token}`;
+
+    }
+    
+    if(json.message != undefined) alert(json.message);
+
+
+  })
+  .catch(error=>{
+    
+        alert("inhabilitado, Hemos enviado un enlace de verificacion a tu correo");
+
+
+        console.log(error);
+  });
+  
+}
+
+});
+
+
+
+
+   });
+
+
+
+
+</script>
+</html>

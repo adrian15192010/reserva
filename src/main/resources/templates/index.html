@@ -120,8 +120,6 @@
      <div class="info-evento">
         <b class="eventoDate nombre"></b>
         <b class="eventoDate tipo"></b>
-        <b class="eventoDate inicio"></b>
-        <b class="eventoDate fin"></b>
         <b class="eventoDate culminado"></b>
      </div>
      <br><br><br>
@@ -152,10 +150,28 @@
 const d = document;
 const $fragment = d.createDocumentFragment();
 
+
+const queryString = window.location.search;
+console.log(queryString); // ?campo1=asdsad&campo2=asds
+
+const urlParams = new URLSearchParams(queryString);
+
+const jwt = urlParams.get('jwt');
+
+
 d.addEventListener("DOMContentLoaded",e=>{
 
+
+//////////////////////////////////////////////////////////
    
-    fetch(`http://localhost:8080/api/estadio/get`)
+    fetch(`http://localhost:8080/api/estadio/get`,{
+                    method: 'GET',
+                    headers: {
+                    'Authorization':`Bearer ${jwt}`,    
+                    'Content-Type': 'application/json' 
+                    }
+
+                })
     .then(res=> res.ok ? res.json() : Promise.reject(res))
     .then(json=>{
 
@@ -184,13 +200,21 @@ d.addEventListener("DOMContentLoaded",e=>{
 let eventoId2 = d.getElementById("list-eventos").value;
 
         
-fetch(`http://localhost:8080/api/silla/reservadas/${eventoId2}`)
+fetch(`http://localhost:8080/api/silla/reservadas/${eventoId2}`,{
+                    method: 'GET',
+                    headers: {
+                    'Authorization':`Bearer ${jwt}`,    
+                    'Content-Type': 'application/json' 
+                    }
+
+                })
 .then(res=> res.ok ? res.json() : Promise.reject(res))
 .then(json=>{
 
   console.log(json);
 
   d.querySelector(".eventoDate.nombre").textContent = "nombre: "+json.nombre;
+  
 
   let sillas = d.querySelectorAll(".silla");
   console.log(sillas);  
@@ -219,7 +243,14 @@ fetch(`http://localhost:8080/api/silla/reservadas/${eventoId2}`)
 
     ////////////////////////////////////////////
 
-    fetch(`http://localhost:8080/api/evento/all`)
+    fetch(`http://localhost:8080/api/evento/all`,{
+                    method: 'GET',
+                    headers: {
+                    'Authorization':`Bearer ${jwt}`,    
+                    'Content-Type': 'application/json' 
+                    }
+
+                })
     .then(res=> res.ok ? res.json() : Promise.reject(res))
     .then(json=>{
 
@@ -273,7 +304,8 @@ fetch(`http://localhost:8080/api/silla/reservadas/${eventoId2}`)
 
     fetch("http://localhost:8080/api/evento/create",{
                 method:"POST",
-                headers: {     
+                headers: {  
+                'Authorization':`Bearer ${jwt}`,         
                'Content-Type': 'application/json' 
                 },
                 body: JSON.stringify({    
@@ -286,15 +318,16 @@ fetch(`http://localhost:8080/api/silla/reservadas/${eventoId2}`)
                 }
             })
             })
-     .then(res=> res.ok ? res.json() : Promise.reject(res))  
+     .then(res=> res.ok ? res.text() : Promise.reject(res))  
      .then(json=>{
 
-        console.log(json);
+        alert(json);
         location.reload();
 
      })
      .catch(err=>{
         console.log(err);
+        alert("solo admin puede crear eventos");
      })     
 
 
@@ -308,13 +341,22 @@ fetch(`http://localhost:8080/api/silla/reservadas/${eventoId2}`)
         let eventoId = e.target.value;
 
         
-    fetch(`http://localhost:8080/api/silla/reservadas/${eventoId}`)
+    fetch(`http://localhost:8080/api/silla/reservadas/${eventoId}`,{
+                    method: 'GET',
+                    headers: {
+                    'Authorization':`Bearer ${jwt}`,    
+                    'Content-Type': 'application/json' 
+                    }
+
+                })
     .then(res=> res.ok ? res.json() : Promise.reject(res))
     .then(json=>{
 
       console.log(json);
 
       d.querySelector(".eventoDate.nombre").textContent = "nombre: "+json.nombre;
+      d.querySelector(".eventoDate.tipo").textContent = "tipo: "+json.tipo;
+      d.querySelector(".eventoDate.culminado").textContent = "culminado: "+json.culminado;
 
       let sillas = d.querySelectorAll(".silla");
       console.log(sillas);  
@@ -358,7 +400,8 @@ fetch(`http://localhost:8080/api/silla/reservadas/${eventoId2}`)
 
            fetch(`http://localhost:8080/api/reserva/create/${idEvento}/${idSilla}`,{
                 method:"POST",
-                headers: {     
+                headers: {  
+               'Authorization':`Bearer ${jwt}`,        
                'Content-Type': 'application/json' 
                 },
                 body: JSON.stringify({    
@@ -368,7 +411,9 @@ fetch(`http://localhost:8080/api/silla/reservadas/${eventoId2}`)
             .then(res=> res.ok ? res.json() : Promise.reject(res))
             .then(json=>{
                 alert(json.message);
-                location.reload();
+                if(json.message != "La silla ya esta reservada para el evento"){
+                    location.reload();
+                }
             });
 
            }

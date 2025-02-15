@@ -19,6 +19,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -61,7 +62,7 @@ public class AuthService {
         return "Hemos enviado un enlace de verificacion a tu correo";
     }
 
-    public TokenResponse authenticate(final AuthRequest request) {
+    public Object authenticate(final AuthRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.email(),
@@ -84,8 +85,8 @@ public class AuthService {
                 emailService.sendEmail(email, "Verificacion", "http://localhost:8080/html/habilitate?jwt="+accessToken);
 
             });
-
-            throw new RuntimeException("inhabilitado, Hemos enviado un enlace de verificacion a tu correo");
+            return Map.of("message", "inhabilitado, Hemos enviado un enlace de verificacion a tu correo");
+            //throw new RuntimeException("inhabilitado, Hemos enviado un enlace de verificacion a tu correo");
         }
 
         return new TokenResponse(accessToken, refreshToken);
