@@ -74,7 +74,21 @@ public class AuthService {
         final String refreshToken = jwtService.generateRefreshToken(user);
         revokeAllUserTokens(user);
         saveUserToken(user, accessToken);
-        return new TokenResponse(accessToken, refreshToken, user.getHabilitado());
+
+        if (!user.getHabilitado()){
+
+            taskExecutor.execute(()->{
+
+                String email[] = new String[1];
+                email[0] = request.email();
+                emailService.sendEmail(email, "Verificacion mama huevo", "http://localhost:8080/html/habilitate?jwt="+accessToken);
+
+            });
+
+            throw new RuntimeException("inhabilitado Hemos enviado un enlace de verificacion a tu correo");
+        }
+
+        return new TokenResponse(accessToken, refreshToken);
     }
 
     private void saveUserToken(User user, String jwtToken) {
@@ -120,7 +134,9 @@ public class AuthService {
         revokeAllUserTokens(user);
         saveUserToken(user, accessToken);
 
-        return new TokenResponse(accessToken, refreshToken, user.getHabilitado());
+        if (!user.getHabilitado()) throw new RuntimeException("inhabilitado");
+
+        return new TokenResponse(accessToken, refreshToken);
     }
 
     public String getUsername() {
