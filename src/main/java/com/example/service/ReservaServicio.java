@@ -42,7 +42,7 @@ public class ReservaServicio {
             throw new RuntimeException();
 
         Evento evento = eventoRepository.findById(idEvento)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED,
                         "Evento no encontrado"));
 
 
