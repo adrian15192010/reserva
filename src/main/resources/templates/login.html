@@ -219,7 +219,7 @@ a{
          </div>
          <div class="remember-forgot">
             <label><input type="checkbox"> Recordarme</label>
-            <a href="#">Olvido su contraseña</a>
+            <a href="#" id="olvido">Olvido su contraseña</a>
          </div>
          <button type="submit" class="btn">Login</button>
         <button type="submit" class="btnAdmin">Entrar como ADMIN</button>
@@ -278,7 +278,7 @@ fetch(`http://localhost:8080/api/auth/login`,{
   })
   .catch(error=>{
     
-        alert("inhabilitado, Hemos enviado un enlace de verificacion a tu correo");
+        alert("correo o clave errada");
 
 
         console.log(error);

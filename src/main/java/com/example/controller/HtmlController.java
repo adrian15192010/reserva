@@ -28,9 +28,9 @@ public class HtmlController {
         return "habilitate";
     }
 
-    @GetMapping("/ZKZg")
+    @GetMapping("/clave")
     public String gif(){
-        return "ZKZg";
+        return "recuperarClave";
     }
 
 }

@@ -179,7 +179,7 @@ public class AuthService {
                 String u[] = new String[1];
                 u[0] = email;
                 emailService.sendEmail(u, "recuperacion de contraseña",
-                        "http://127.0.0.1:5500/recuperarClave.html?jwt="+token);
+                        "http://localhost:8080/html/clave?jwt="+token);
 
             });
             return "se envio un enlace a tu correo para que recuperes tu contraseña";
