@@ -121,7 +121,7 @@ fetch(`http://localhost:8080/api/auth/register`,{
   })
   .catch(error=>{
     d.querySelector("img").classList.toggle("hidden");
-        console.log(error);
+        alert("error, el usuario ya existe");
     error.status == 409 ? alert("error: usuario existente") : alert("otro error")
  });
   

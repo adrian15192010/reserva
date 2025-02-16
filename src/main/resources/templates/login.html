@@ -263,7 +263,7 @@ fetch(`http://localhost:8080/api/auth/login`,{
   .then(json=>{
    
 
-    if(json.message != "inhabilitado, Hemos enviado un enlace de verificacion a tu correo"){
+    if(json.message != "tu cuenta esta inhabilitada, Hemos enviado un enlace de habilitacion a tu correo"){
 
         window.location.href = `http://localhost:8080/html/index?jwt=${json.access_token}`;
     

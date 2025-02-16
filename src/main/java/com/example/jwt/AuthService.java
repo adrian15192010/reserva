@@ -92,7 +92,7 @@ public class AuthService {
 
             });
 
-            return ResponseEntity.ok(Map.of("message", "inhabilitado, Hemos enviado un enlace de verificacion a tu correo"));
+            return ResponseEntity.ok(Map.of("message", "tu cuenta esta inhabilitada, Hemos enviado un enlace de habilitacion a tu correo"));
             //throw new RuntimeException("inhabilitado, Hemos enviado un enlace de verificacion a tu correo");
         }
 
