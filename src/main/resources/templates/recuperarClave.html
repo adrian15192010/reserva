@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <br><b>coloque su nueva contraseña</b><br>
+    <input type="text" placeholder="contraseña nueva">
+    <button>aceptar</button>
+
+</body>
+<script>
+
+    const d = document;
+
+    const queryString = window.location.search;
+    console.log(queryString); // ?campo1=asdsad&campo2=asds
+    
+    const urlParams = new URLSearchParams(queryString);
+    
+    const jwt = urlParams.get('jwt');
+
+
+    d.addEventListener("DOMContentLoaded", e=>{
+
+        d.querySelector("button").addEventListener("click",e=>{
+
+            let nuevaClave = d.querySelector("input").value;
+
+            fetch(`http://localhost:8080/api/auth/clave/nueva/${nuevaClave}`,{
+            method:"POST",
+            headers: {
+            'Authorization':`Bearer ${jwt}`,     
+            'Content-Type': 'application/json' 
+            }
+        })
+        .then(res=> res.ok ? res.text() : Promise.reject(res))
+        .then(json=>{
+            alert(json);
+        });
+
+
+        });
+
+
+    });
+
+
+</script>
+</html>
