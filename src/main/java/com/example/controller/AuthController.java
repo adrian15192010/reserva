@@ -47,6 +47,16 @@ public class AuthController {
         return ResponseEntity.ok(service.habilitarUser(authentication));
     }
 
+    @PostMapping("/redireccion/{email}")
+    public ResponseEntity<String> redireccion(@PathVariable String email){
+        return ResponseEntity.ok(service.redireccion(email));
+    }
+
+    @PostMapping("/clave/nueva/{clave}")
+    public ResponseEntity<?> nuevaClave(@PathVariable String clave){
+        return ResponseEntity.ok(service.claveNueva(clave));
+    }
+
 
     @GetMapping("all")
     public ResponseEntity<?> users(){

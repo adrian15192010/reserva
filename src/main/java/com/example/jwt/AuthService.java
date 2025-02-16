@@ -20,6 +20,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 
 @Service
@@ -165,5 +166,39 @@ public class AuthService {
         return "cuenta habilitada";
     }
 
+    public String redireccion(String email){
+
+        Optional<User> userOptional = userRepository.findByEmail(email);
+
+        if (userOptional.isPresent()){
+
+            taskExecutor.execute(()->{
+
+                String token = jwtService.generateToken(userOptional.get());
+
+                String u[] = new String[1];
+                u[0] = email;
+                emailService.sendEmail(u, "recuperacion de contraseña",
+                        "http://127.0.0.1:5500/recuperarClave.html?jwt="+token);
+
+            });
+            return "se envio un enlace a tu correo para que recuperes tu contraseña";
+        }
+            return "el correo no existe en nuestra base de dato";
+    }
+
+    public String claveNueva(String clave){
+
+        Optional<User> userOptional = userRepository.findByEmail(getUsername());
+
+        if (userOptional.isPresent()){
+
+            User user = userOptional.get();
+            user.setPassword(passwordEncoder.encode(clave));
+            userRepository.save(user);
+            return "se ha cambiado su contraseña";
+        }
+        return "error";
+    }
 
 }
