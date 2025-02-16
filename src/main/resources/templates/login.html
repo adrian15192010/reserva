@@ -323,7 +323,24 @@ if(e.target.matches(".btnAdmin")){
    });
 }
 ///////////////////////////////////////////////////////////////
+if(e.target.matches("#olvido")){
 
+        let email = prompt("coloque su correo electronico");
+
+        fetch(`http://localhost:8080/api/auth/redireccion/${email}`,{
+            method:"POST",
+            headers: {
+            'Content-Type': 'application/json'
+            }
+        })
+        .then(res=> res.ok ? res.text() : Promise.reject(res))
+        .then(json=>{
+            alert(json);
+        });
+
+
+
+    }
 ///////////////////////////////////////////////////////////////
 });
 

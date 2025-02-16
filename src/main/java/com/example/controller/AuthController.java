@@ -53,7 +53,7 @@ public class AuthController {
     }
 
     @PostMapping("/clave/nueva/{clave}")
-    public ResponseEntity<?> nuevaClave(@PathVariable String clave){
+    public ResponseEntity<String> nuevaClave(@PathVariable String clave){
         return ResponseEntity.ok(service.claveNueva(clave));
     }
 
