@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -63,13 +64,17 @@ public class AuthService {
         return "Hemos enviado un enlace de verificacion a tu correo";
     }
 
-    public Object authenticate(final AuthRequest request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.email(),
-                        request.password()
-                )
-        );
+    public ResponseEntity<?> authenticate(final AuthRequest request) {
+
+
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            request.email(),
+                            request.password()
+                    )
+            );
+
+
         final User user = repository.findByEmail(request.email())
                 .orElseThrow();
         final String accessToken = jwtService.generateToken(user);
@@ -83,14 +88,15 @@ public class AuthService {
 
                 String email[] = new String[1];
                 email[0] = request.email();
-                emailService.sendEmail(email, "Verificacion", "http://localhost:8080/html/habilitate?jwt="+accessToken);
+                emailService.sendEmail(email, "Verificacion login", "http://localhost:8080/html/habilitate?jwt="+accessToken);
 
             });
-            return Map.of("message", "inhabilitado, Hemos enviado un enlace de verificacion a tu correo");
+
+            return ResponseEntity.ok(Map.of("message", "inhabilitado, Hemos enviado un enlace de verificacion a tu correo"));
             //throw new RuntimeException("inhabilitado, Hemos enviado un enlace de verificacion a tu correo");
         }
 
-        return new TokenResponse(accessToken, refreshToken);
+        return ResponseEntity.ok( new TokenResponse(accessToken, refreshToken));
     }
 
     private void saveUserToken(User user, String jwtToken) {

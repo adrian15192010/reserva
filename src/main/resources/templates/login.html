@@ -262,7 +262,6 @@ fetch(`http://localhost:8080/api/auth/login`,{
   .then(res=> res.ok ? res.json() : Promise.reject(res))
   .then(json=>{
    
-  console.log(json);
 
     if(json.message != "inhabilitado, Hemos enviado un enlace de verificacion a tu correo"){
 
@@ -270,18 +269,18 @@ fetch(`http://localhost:8080/api/auth/login`,{
     
        //window.location.href = `./index.html?jwt=${json.access_token}`;
 
+    }else{
+       alert(json.message);
     }
-    
-    if(json.message != undefined) alert(json.message);
 
 
   })
   .catch(error=>{
     
-        alert("correo o clave errada o cuenta inhabilitada");
+        alert("correo o clave errada catch");
 
 
-        console.log(error);
+
   });
   
 }

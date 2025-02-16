@@ -30,9 +30,8 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Object> authenticate(@RequestBody AuthRequest request) {
-        final TokenResponse response = (TokenResponse) service.authenticate(request);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<?> authenticate(@RequestBody AuthRequest request) {
+        return service.authenticate(request);
     }
 
     @PostMapping("/refresh-token")
