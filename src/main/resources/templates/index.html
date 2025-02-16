@@ -320,11 +320,15 @@ fetch(`http://localhost:8080/api/silla/reservadas/${eventoId2}`,{
                 }
             })
             })
-     .then(res=> res.ok ? res.text() : Promise.reject(res))  
+     .then(res=> res.ok ? res.json() : Promise.reject(res))
      .then(json=>{
 
-        alert("evento creado exitosamente");
-        location.reload();
+        if(json.message != "Ya hay un evento programado en este horario y estadio"){
+         alert(json.message);
+         location.reload();
+        }else{
+         alert(json.message);
+        }
 
      })
      .catch(err=>{

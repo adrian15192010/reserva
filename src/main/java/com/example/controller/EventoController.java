@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -34,12 +35,12 @@ public class EventoController {
         for (Evento evento : eventosExistentes) {
 
             if (nuevoEvento.getInicio().isBefore(evento.getFin()) && nuevoEvento.getFin().isAfter(evento.getInicio())) {
-                return ResponseEntity.ok("Ya hay un evento programado en este horario y estadio");
+                return ResponseEntity.ok(Map.of("message","Ya hay un evento programado en este horario y estadio"));
             }
         }
         eventoRepository.save(nuevoEvento);
 
-        return  ResponseEntity.ok(eventosExistentes);
+        return  ResponseEntity.ok(Map.of("message","evento creado exitosamente"));
 
     }
 
