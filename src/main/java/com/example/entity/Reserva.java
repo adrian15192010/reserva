@@ -22,7 +22,7 @@ public class Reserva {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Integer ci;
+    private String usuario;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_evento")

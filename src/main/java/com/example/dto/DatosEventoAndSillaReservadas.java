@@ -4,7 +4,6 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 @Setter
 @Getter
@@ -26,6 +25,6 @@ public class DatosEventoAndSillaReservadas {
 
     private LocalDateTime fin;
 
-    private List<Map> listaDeSillasReservadas;
+    private List<Long> listaDeSillasReservadas;
 
 }
