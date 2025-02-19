@@ -96,6 +96,10 @@
         display: inline;
     }
 
+    .ci{
+        font-size: 0.6rem;
+    }
+
 </style>
 <body>
 <header>
@@ -229,7 +233,7 @@ fetch(`http://localhost:8080/api/silla/reservadas/${eventoId2}`,{
     console.log(numero);
     sillas.forEach(el=>{
              console.log(el.textContent);
-         if(numero == parseInt(el.textContent)){
+         if(numero.numeroSilla == parseInt(el.textContent)){
                 el.classList.add("ocupada");
                 
          }   
@@ -375,9 +379,9 @@ fetch(`http://localhost:8080/api/silla/reservadas/${eventoId2}`,{
         console.log(numero);
         sillas.forEach(el=>{
                  console.log(el.textContent);
-             if(numero == parseInt(el.textContent)){
+             if(numero.numeroSilla == parseInt(el.textContent)){
                     el.classList.add("ocupada");
-                    
+                    el.innerHTML = `${el.textContent}<p class="ci">CI: ${numero.ci}</p>`;
              }   
 
         })

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -43,11 +44,11 @@ public class SillaController {
         Evento evento = eventoRepository.findById(idEvento).get();
         List<Reserva> reservaList = reservaRepository.findByEvento(evento);
 
-        List<Long> listaDeSillasReservadas = new ArrayList<>();
+        List<Map> listaDeSillasReservadas = new ArrayList<>();
 
         for (Reserva reserva : reservaList){
             Long silla = reserva.getSilla().getId();
-            listaDeSillasReservadas.add(silla);
+            listaDeSillasReservadas.add(Map.of("numeroSilla", silla, "ci", reserva.getCi()));
         }
 
         return ResponseEntity.ok(DatosEventoAndSillaReservadas.builder()
