@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import com.example.dto.ReservaDto;
 import com.example.entity.Evento;
 import com.example.entity.Reserva;
 import com.example.entity.Silla;
@@ -42,11 +43,19 @@ public class ReservaController {
                 .body(reservaServicio.createReserva(reserva, idEvento, idSilla));
     }
 
+    @GetMapping("/dto/{id}")
+    public ResponseEntity<?> reservaDTOget(@PathVariable Long id){
 
+        Reserva reserva = reservaRepository.findById(id).orElseThrow();
 
+        return ResponseEntity.ok(ReservaDto.builder()
+                .id(reserva.getId())
+                .usuario(reserva.getUsuario())
+                .eventoName(reserva.getEvento().getNombre())
+                .sillaId(reserva.getId())
+                .build());
 
-
-
+    }
 
 
 }
