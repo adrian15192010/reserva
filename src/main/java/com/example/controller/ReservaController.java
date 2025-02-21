@@ -52,7 +52,7 @@ public class ReservaController {
                 .id(reserva.getId())
                 .usuario(reserva.getUsuario())
                 .eventoName(reserva.getEvento().getNombre())
-                .sillaId(reserva.getId())
+                .sillaId(reserva.getSilla().getId())
                 .build());
 
     }
