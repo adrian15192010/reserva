@@ -33,4 +33,9 @@ public class HtmlController {
         return "recuperarClave";
     }
 
+    @GetMapping("/detalle")
+    public String detalle(){
+        return "detalle";
+    }
+
 }

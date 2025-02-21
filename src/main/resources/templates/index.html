@@ -95,6 +95,15 @@
         margin-left : 2rem;
         display: inline;
     }
+    .detalle{
+        font-size: 0.8rem;
+        height: 1rem;
+        width: 3rem;
+    }
+    .contenedor{
+        display: inline-block;
+        margin: 0.2rem;
+    }
 
 </style>
 <body>
@@ -143,7 +152,10 @@
 </div>
 
 <template id="template">
-    <article class="silla"></article>
+    <div class="contenedor">
+        <button class="detalle">detalle</button><br>    
+        <article class="silla"></article>
+    </div>
 </template>
 <br><br><br><br><br><br><br><br><br><br>
 </body>
@@ -229,7 +241,7 @@ fetch(`http://localhost:8080/api/silla/reservadas/${eventoId2}`,{
     console.log(numero);
     sillas.forEach(el=>{
              console.log(el.textContent);
-         if(numero == parseInt(el.textContent)){
+         if(numero.numeroSilla == parseInt(el.textContent)){
                 el.classList.add("ocupada");
                 
          }   
@@ -375,9 +387,9 @@ fetch(`http://localhost:8080/api/silla/reservadas/${eventoId2}`,{
         console.log(numero);
         sillas.forEach(el=>{
                  console.log(el.textContent);
-             if(numero == parseInt(el.textContent)){
+             if(numero.numeroSilla == parseInt(el.textContent)){
                     el.classList.add("ocupada");
-
+                    el.previousElementSibling.previousElementSibling.dataset.id = numero.idReserva;
              }   
 
         })
@@ -443,8 +455,27 @@ fetch(`http://localhost:8080/api/silla/reservadas/${eventoId2}`,{
             });
         }
 
+        if(e.target.matches(".detalle")){
+            
+           let reserva_id = e.target.dataset.id;     
+            alert(reserva_id);
+
+            if(reserva_id){
+                
+
+                window.open(`http://localhost:8080/html/detalle?jwt=${jwt}&id=${reserva_id}`, '_blank');
+
+
+
+            }
+
+
+        }
+
 ///////////////////////////////////////////////////////////////////
     });
+
+
 
 });
 

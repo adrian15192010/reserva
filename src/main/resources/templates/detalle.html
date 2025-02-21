@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+
+    b{
+        display: block;
+        margin: 1rem;
+        font-size: 2rem;
+    }
+
+</style>
+<body>
+    
+    <h1>Detalles de la reservación</h1>
+<br><br>
+
+    <b id="id"></b>
+    <b id="usuario"></b>
+    <b id="eventoName"></b>
+    <b id="sillaId"></b>
+
+</body>
+<script>
+
+const d = document;
+
+const queryString = window.location.search;
+
+const urlParams = new URLSearchParams(queryString);
+
+const jwt = urlParams.get('jwt');
+const id = urlParams.get('id');
+
+console.log(queryString); // ?campo1=asdsad&campo2=asds
+
+
+    d.addEventListener("DOMContentLoaded", e=>{
+
+        
+            fetch(`http://localhost:8080/api/reserva/dto/${id}`,{
+                method:"GET",
+                headers: {
+               'Authorization':`Bearer ${jwt}`,
+               'Content-Type': 'application/json'
+                }
+            })
+            .then(res=> res.ok ? res.json() : Promise.reject(res))
+            .then(reservaDto =>{
+
+                d.getElementById("id").textContent = "Id: "+ reservaDto.id;
+                d.getElementById("usuario").textContent = "Usuario: "+reservaDto.usuario;
+                d.getElementById("eventoName").textContent = "Nombre del Evento: "+reservaDto.eventoName;
+                d.getElementById("sillaId").textContent = "Numero de Silla: "+reservaDto.sillaId;
+
+
+
+            });
+
+
+    });
+
+
+
+</script>
+</html>
