@@ -132,6 +132,8 @@
         <b class="eventoDate nombre"></b>
         <b class="eventoDate tipo"></b>
         <b class="eventoDate culminado"></b>
+         <b class="eventoDate inicio"></b>
+         <b class="eventoDate fin"></b>
      </div>
      <br><br><br>
    
@@ -375,6 +377,8 @@ fetch(`http://localhost:8080/api/silla/reservadas/${eventoId2}`,{
       d.querySelector(".eventoDate.nombre").textContent = "nombre: "+json.nombre;
       d.querySelector(".eventoDate.tipo").textContent = "tipo: "+json.tipo;
       d.querySelector(".eventoDate.culminado").textContent = "culminado: "+json.culminado;
+      d.querySelector(".eventoDate.inicio").textContent = "inicio: "+json.inicio;
+      d.querySelector(".eventoDate.fin").textContent = "fin: "+json.fin;
 
       let sillas = d.querySelectorAll(".silla");
       console.log(sillas);  
