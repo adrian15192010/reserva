@@ -228,6 +228,7 @@ a{
          </div>
             <a href="habilitar">habilitar</a>
     </form>
+    <button id="deleteEvents">Eliminar todos los Eventos</button>
 </div>
 </body>
 <script>
@@ -343,6 +344,22 @@ if(e.target.matches("#olvido")){
 
     }
 ///////////////////////////////////////////////////////////////
+
+ if(e.target.matches("#deleteEvents")){
+
+     fetch(`http://localhost:8080/api/auth/eventos`,{
+            method:"DELETE",
+            headers: {
+            'Content-Type': 'application/json'
+            }
+        })
+        .then(res=> res.ok ? res.text() : Promise.reject(res))
+        .then(json=>{
+            alert(json);
+        });
+
+ }
+
 });
 
 
