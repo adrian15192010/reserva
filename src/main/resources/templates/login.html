@@ -235,13 +235,15 @@ a{
 
 
    const d = document;
-
+    let ruta;
 
    d.addEventListener("DOMContentLoaded",e=>{
-
+     ruta = window.location.origin
     e.preventDefault();
 
       d.addEventListener("click", e =>{
+
+
 
  console.log(window.location.href)
  console.log(window.location.origin)
@@ -252,7 +254,7 @@ if(e.target.matches(".btn")){
     let $inputs = d.querySelectorAll("input");
    // d.querySelector("img").classList.toggle("hidden");
 
-fetch(`http://localhost:8080/api/auth/login`,{
+fetch(`${ruta}/api/auth/login`,{
     method:"POST",
     headers: {
     'Content-Type': 'application/json' 
@@ -268,7 +270,7 @@ fetch(`http://localhost:8080/api/auth/login`,{
 
     if(json.message != "tu cuenta esta inhabilitada, Hemos enviado un enlace de habilitacion a tu correo"){
 
-        window.location.href = `http://localhost:8080/html/index?jwt=${json.access_token}`;
+        window.location.href = `${ruta}/html/index?jwt=${json.access_token}`;
     
        //window.location.href = `./index.html?jwt=${json.access_token}`;
 
@@ -289,7 +291,7 @@ fetch(`http://localhost:8080/api/auth/login`,{
 }
 /////////////////////////////////////////////////////////////////////
 if(e.target.matches(".btnAdmin")){
-    fetch(`http://localhost:8080/api/auth/login`,{
+    fetch(`${ruta}/api/auth/login`,{
     method:"POST",
     headers: {
     'Content-Type': 'application/json'
@@ -306,7 +308,7 @@ if(e.target.matches(".btnAdmin")){
 
      if(json.message != "inhabilitado, Hemos enviado un enlace de verificacion a tu correo"){
 
-         window.location.href = `http://localhost:8080/html/index?jwt=${json.access_token}`;
+         window.location.href = `${ruta}/html/index?jwt=${json.access_token}`;
 
        // window.location.href = `./index.html?jwt=${json.access_token}`;
 
@@ -329,7 +331,7 @@ if(e.target.matches("#olvido")){
 
         let email = prompt("coloque su correo electronico");
 
-        fetch(`http://localhost:8080/api/auth/redireccion/${email}`,{
+        fetch(`${ruta}/api/auth/redireccion/${email}`,{
             method:"POST",
             headers: {
             'Content-Type': 'application/json'
@@ -347,7 +349,7 @@ if(e.target.matches("#olvido")){
 
  if(e.target.matches("#deleteEvents")){
 
-     fetch(`http://localhost:8080/api/auth/eventos`,{
+     fetch(`${ruta}/api/auth/eventos`,{
             method:"DELETE",
             headers: {
             'Content-Type': 'application/json'

@@ -165,6 +165,7 @@
 
 const d = document;
 const $fragment = d.createDocumentFragment();
+let ruta;
 
 
 const queryString = window.location.search;
@@ -177,10 +178,10 @@ const jwt = urlParams.get('jwt');
 
 d.addEventListener("DOMContentLoaded",e=>{
 
-
+ruta = window.location.origin
 //////////////////////////////////////////////////////////
    
-    fetch(`http://localhost:8080/api/estadio/get`,{
+    fetch(`${ruta}/api/estadio/get`,{
                     method: 'GET',
                     headers: {
                     'Authorization':`Bearer ${jwt}`,    
@@ -199,7 +200,7 @@ d.addEventListener("DOMContentLoaded",e=>{
     d.querySelector("#capacidad-estadio").textContent = json.capacidad;
 
     let sillas = json.sillaList
-
+    console.log(sillas)
     sillas.forEach(el => {
 
        let silla = $template.querySelector(".silla");
@@ -216,7 +217,7 @@ d.addEventListener("DOMContentLoaded",e=>{
 let eventoId2 = d.getElementById("list-eventos").value;
 
         
-fetch(`http://localhost:8080/api/silla/reservadas/${eventoId2}`,{
+fetch(`${ruta}/api/silla/reservadas/${eventoId2}`,{
                     method: 'GET',
                     headers: {
                     'Authorization':`Bearer ${jwt}`,    
@@ -259,7 +260,7 @@ fetch(`http://localhost:8080/api/silla/reservadas/${eventoId2}`,{
 
     ////////////////////////////////////////////
 
-    fetch(`http://localhost:8080/api/evento/all`,{
+    fetch(`${ruta}/api/evento/all`,{
                     method: 'GET',
                     headers: {
                     'Authorization':`Bearer ${jwt}`,    
@@ -318,7 +319,7 @@ fetch(`http://localhost:8080/api/silla/reservadas/${eventoId2}`,{
     console.log(`${año}-${mes}-${dia}T${horas}:${minutos}:00`);
 
 
-    fetch("http://localhost:8080/api/evento/create",{
+    fetch(`${ruta}/api/evento/create`,{
                 method:"POST",
                 headers: {  
                 'Authorization':`Bearer ${jwt}`,         
@@ -361,7 +362,7 @@ fetch(`http://localhost:8080/api/silla/reservadas/${eventoId2}`,{
         let eventoId = e.target.value;
 
         
-    fetch(`http://localhost:8080/api/silla/reservadas/${eventoId}`,{
+    fetch(`${ruta}/api/silla/reservadas/${eventoId}`,{
                     method: 'GET',
                     headers: {
                     'Authorization':`Bearer ${jwt}`,    
@@ -420,7 +421,7 @@ fetch(`http://localhost:8080/api/silla/reservadas/${eventoId2}`,{
            if(booleano){
            let cedula = prompt("ingrese la cedula de la persona que tendra la reserva para la silla");    
 
-           fetch(`http://localhost:8080/api/reserva/create/${idEvento}/${idSilla}`,{
+           fetch(`${ruta}/api/reserva/create/${idEvento}/${idSilla}`,{
                 method:"POST",
                 headers: {  
                'Authorization':`Bearer ${jwt}`,        
@@ -443,7 +444,7 @@ fetch(`http://localhost:8080/api/silla/reservadas/${eventoId2}`,{
         }
 //////////////////////////////////////////////////////////
         if(e.target.matches("#cerrar_sesion")){
-            fetch(`http://localhost:8080/api/auth/logout`,{
+            fetch(`${ruta}/api/auth/logout`,{
                 method:"GET",
                 headers: {
                'Authorization':`Bearer ${jwt}`,
@@ -466,7 +467,7 @@ fetch(`http://localhost:8080/api/silla/reservadas/${eventoId2}`,{
             if(reserva_id){
                 
 
-                window.open(`http://localhost:8080/html/detalle?jwt=${jwt}&id=${reserva_id}`, '_blank');
+                window.open(`${ruta}/html/detalle?jwt=${jwt}&id=${reserva_id}`, '_blank');
 
 
 

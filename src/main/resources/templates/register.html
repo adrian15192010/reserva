@@ -88,9 +88,11 @@
 <script>
 
 const d = document;
-
+let ruta;
 
 d.addEventListener("DOMContentLoaded",e=>{
+
+     ruta = window.location.origin
 
     d.addEventListener("click", e =>{
     e.preventDefault();
@@ -101,7 +103,7 @@ if(e.target.matches("button")){
     let $inputs = d.querySelectorAll("input");
     console.log($inputs[0].value);
 
-fetch(`http://localhost:8080/api/auth/register`,{
+fetch(`${ruta}/api/auth/register`,{
     method:"POST",
     headers: {
     'Content-Type': 'application/json' 

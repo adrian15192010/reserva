@@ -15,6 +15,7 @@
 <script>
 
     const d = document;
+    let ruta;
 
     const queryString = window.location.search;
     console.log(queryString); // ?campo1=asdsad&campo2=asds
@@ -26,11 +27,13 @@
 
     d.addEventListener("DOMContentLoaded", e=>{
 
+    ruta = window.location.origin
+
         d.querySelector("button").addEventListener("click",e=>{
 
             let nuevaClave = d.querySelector("input").value;
 
-            fetch(`http://localhost:8080/api/auth/clave/nueva/${nuevaClave}`,{
+            fetch(`${ruta}/api/auth/clave/nueva/${nuevaClave}`,{
             method:"POST",
             headers: {
             'Authorization':`Bearer ${jwt}`,     
