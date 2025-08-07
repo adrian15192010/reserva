@@ -28,6 +28,7 @@
 <script>
 
 const d = document;
+let ruta;
 
 const queryString = window.location.search;
 
@@ -41,8 +42,9 @@ console.log(queryString); // ?campo1=asdsad&campo2=asds
 
     d.addEventListener("DOMContentLoaded", e=>{
 
+    ruta = window.location.origin
         
-            fetch(`http://localhost:8080/api/reserva/dto/${id}`,{
+            fetch(`${ruta}/api/reserva/dto/${id}`,{
                 method:"GET",
                 headers: {
                'Authorization':`Bearer ${jwt}`,
