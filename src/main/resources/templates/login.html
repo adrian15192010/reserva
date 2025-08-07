@@ -254,14 +254,15 @@ if(e.target.matches(".btn")){
     let $inputs = d.querySelectorAll("input");
    // d.querySelector("img").classList.toggle("hidden");
 
-fetch(`${ruta}/api/auth/login/${ruta}`,{
+fetch(`${ruta}/api/auth/login`,{
     method:"POST",
     headers: {
     'Content-Type': 'application/json' 
     },
     body: JSON.stringify({    
   email:$inputs[0].value,
-  password:$inputs[1].value
+  password:$inputs[1].value,
+  ruta: ruta
     })
   })
   .then(res=> res.ok ? res.json() : Promise.reject(res))

@@ -103,7 +103,7 @@ if(e.target.matches("button")){
     let $inputs = d.querySelectorAll("input");
     console.log($inputs[0].value);
 
-fetch(`${ruta}/api/auth/register/${ruta}`,{
+fetch(`${ruta}/api/auth/register`,{
     method:"POST",
     headers: {
     'Content-Type': 'application/json' 
@@ -111,7 +111,8 @@ fetch(`${ruta}/api/auth/register/${ruta}`,{
     body: JSON.stringify({  
     name: $inputs[0].value,      
     email: $inputs[1].value,
-	password:$inputs[2].value
+	password:$inputs[2].value,
+	ruta: ruta
     })
   })
   .then(res=> res.ok ? res.text() : Promise.reject(res))
