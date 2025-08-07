@@ -38,7 +38,7 @@ public class AuthService {
 
 
 
-    public String register(final RegisterRequest request) {
+    public String register(final RegisterRequest request, String ruta) {
         final User user = User.builder()
                 .name(request.name())
                 .email(request.email())
@@ -57,14 +57,14 @@ public class AuthService {
 
             String email[] = new String[1];
             email[0] = request.email();
-            emailService.sendEmail(email, "Verificacion", "http://localhost:8080/html/habilitate?jwt="+jwtToken);
+            emailService.sendEmail(email, "Verificacion", ruta+"/html/habilitate?jwt="+jwtToken);
 
         });
 
         return "Hemos enviado un enlace de verificacion a tu correo";
     }
 
-    public ResponseEntity<?> authenticate(final AuthRequest request) {
+    public ResponseEntity<?> authenticate(final AuthRequest request, String ruta) {
 
 
             authenticationManager.authenticate(
@@ -88,7 +88,7 @@ public class AuthService {
 
                 String email[] = new String[1];
                 email[0] = request.email();
-                emailService.sendEmail(email, "Verificacion login", "http://localhost:8080/html/habilitate?jwt="+accessToken);
+                emailService.sendEmail(email, "Verificacion login", ruta+"/html/habilitate?jwt="+accessToken);
 
             });
 

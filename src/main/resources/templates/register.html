@@ -103,7 +103,7 @@ if(e.target.matches("button")){
     let $inputs = d.querySelectorAll("input");
     console.log($inputs[0].value);
 
-fetch(`${ruta}/api/auth/register`,{
+fetch(`${ruta}/api/auth/register/${ruta}`,{
     method:"POST",
     headers: {
     'Content-Type': 'application/json' 

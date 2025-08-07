@@ -29,15 +29,16 @@ public class AuthController {
     private JwtService jwtService;
 
 
-    @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody RegisterRequest request) {
-        final String response = service.register(request);
+    @PostMapping("/register/{ruta}")
+    public ResponseEntity<String> register(@RequestBody RegisterRequest request,
+                                           @PathVariable String ruta) {
+        final String response = service.register(request, ruta);
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<?> authenticate(@RequestBody AuthRequest request) {
-        return service.authenticate(request);
+    @PostMapping("/login/{ruta}")
+    public ResponseEntity<?> authenticate(@RequestBody AuthRequest request, @PathVariable String ruta) {
+        return service.authenticate(request, ruta);
     }
 
     @PostMapping("/refresh-token")

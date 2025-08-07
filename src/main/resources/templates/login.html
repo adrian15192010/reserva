@@ -254,7 +254,7 @@ if(e.target.matches(".btn")){
     let $inputs = d.querySelectorAll("input");
    // d.querySelector("img").classList.toggle("hidden");
 
-fetch(`${ruta}/api/auth/login`,{
+fetch(`${ruta}/api/auth/login/${ruta}`,{
     method:"POST",
     headers: {
     'Content-Type': 'application/json' 
