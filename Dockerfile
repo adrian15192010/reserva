@@ -4,6 +4,7 @@ FROM maven:3.9.6-eclipse-temurin-21-alpine AS build
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
 
+
 WORKDIR /app
 COPY pom.xml .
 COPY src ./src
